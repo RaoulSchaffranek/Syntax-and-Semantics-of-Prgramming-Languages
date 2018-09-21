@@ -1,0 +1,318 @@
+\documentclass{article}[12pt]
+    \usepackage{amsmath}
+    \usepackage{amsfonts}
+    \usepackage{tikz}
+    \usetikzlibrary{positioning}
+    \usepackage{enumitem}
+    \usepackage{txfonts}
+    \usepackage{float}
+    \title{Syntax and Semantics of Programming Languages - Chapter 10: Domain Theory Exercises}
+    \author{Raoul Schaffranek}
+    \date{September 21, 2018}
+    
+    \newcommand{\filter}{\ \ensuremath{\text{\textcircled{s}}}\ }
+    \newcommand{\lub}{\ensuremath{\textit{}{lub}}}
+    \newcommand{\fix}{\ensuremath{\textit{}{fix}}}
+    \newcommand{\Fun}{\ensuremath{\text{Fun}}}
+    \newcommand{\inS}{\ensuremath{\textit{inS}}}
+    \newcommand{\outA}{\ensuremath{\textit{outA}}}
+    \newcommand{\head}{\ensuremath{\textit{head}}}
+    \newcommand{\tail}{\ensuremath{\textit{tail}}}
+    \newcommand{\myif}{\ensuremath{\text{ if }}}
+    \newcommand{\then}{\ensuremath{\text{ then }}}
+    \newcommand{\myelse}{\ensuremath{\text{ else }}}
+    % Hide section numbers
+    \renewcommand\thesection{}
+    
+\begin{document}
+\maketitle
+
+\section{Exercise 10.2.6}
+Prove that the least upper bound of an ascending chain $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$ of a domain $D$ is unique.
+\paragraph{Solution}
+Let $y$ and $z$ be two arbitrary but fixed least upper bounds of some ascending chain $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$.
+We show that $y = z$.
+By the definition of least upper bound, we have that $y \subseteq m$ and $z \subseteq m$ for each upper bound $m$ of $\{x_i\ |\ i \geq 1\}$. In particular, we have that $y \subseteq z$ and $z \subseteq y$. Thus $y = z$.
+
+\section{Exercise 10.2.10}
+Prove the following property:\\
+A function $f$ in $\Fun(A,B)$ is continuous if and only if both of the following conditions hold.
+\begin{enumerate}[label=\alph*)]
+    \item $f$ is monotonic
+    \item For any ascending chain $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$ in $A$, $f(\lub_A\{x_i|i\geq 1\}) \subseteq \lub_B\{f(x_i)|i\geq 1\}$.
+\end{enumerate}
+
+\paragraph{Solution}
+
+Assume $f$ is continuous. This implies, $f$ is monotonic.
+By definition of continuous, we further have, that:
+$f(\lub_A\{x_i|i\geq 1\}) = \lub_B\{f(x_i)|i\geq 1\}$ for any ascending chain $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$ in $A$. In partialar we have $f(\lub_A\{x_i|i\geq 1\}) \subseteq \lub_B\{f(x_i)|i\geq 1\}$
+
+Now, assume $f$ is monotonic and for any ascending chain $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$ in $A$, $f(\lub_A\{x_i|i\geq 1\}) \subseteq \lub_B\{f(x_i)|i\geq 1\}$.
+It remains to show, that for every ascending chain $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$ in $A$ the following property holds: $\lub_B\{f(x_i)|i\geq 1\} \subseteq f(\lub_A\{x_i|i\geq 1\})$.
+
+Sorry.
+
+\section{Exervise 10.2.12}
+
+First $\inS$: We have to consider two cases: $\inS : A \rightarrow A + B$ and $\inS : B \rightarrow A + B$.\\
+\begin{itemize}
+    \item Case $\inS: A \rightarrow A + B$:\\
+    Let $a_1 \subseteq a_2 \subseteq a_3 \subseteq \cdots$ be an ascending chain in $A$.
+    We then have:
+    \begin{align*}
+        &\mathbin{\hphantom{=}} \lub\{\inS(a_i)\ |\ i \geq 1\}\\
+        &= \lub\{ \langle a_i,1 \rangle\ |\ i \geq 1 \}\\
+        &= \langle \lub\{a_i\ |\ i \geq 1\}, 1 \rangle\\
+        &= \inS(\lub\{a_i\ |\ i >= 1\}) 
+    \end{align*}
+    \item Case $\inS : B \rightarrow A + B$: analogous to previous case.
+\end{itemize}
+
+First $\outA$: Let $x_1 \subseteq x_2 \subseteq x_3 \subseteq \cdots$ be an ascending chain in $A + B$.
+There are three cases to consider: Either $x_i = \bot$ for all $i \geq 1$. Or there is some index $k$ with $1 \leq k$,
+such that for all $i \geq k$ we have $x_i \in A$ or $x_i \in B$. This is because elements of $A$ are not related
+to elements of $B$ via $\subseteq$ and vice versa.
+\begin{itemize}
+    \item Case $x_i = \bot$ for all $i \geq 1$:
+    \begin{align*}
+        &\mathbin{\hphantom{=}} \lub\{\outA(x_i)\ |\ i \geq 1\}\\
+        &= \lub\{\outA(\bot)\ |\ i \geq 1\}\\
+        &= \lub\{\bot\ |\ i \geq 1\}\\
+        &= \bot\\
+        &= \outA(\bot)\\
+        &= \outA(\lub\{\bot\ |\ i \geq 1\})\\
+        &= \outA(\lub\{x_i\ |\ i \geq 1\})
+    \end{align*}
+    \item Case $\exists k. 1 \leq k$, s.t. $\forall i. i \geq k. x_i \in B$
+    \begin{align*}
+        &\mathbin{\hphantom{=}} \lub\{\outA(x_i)\ |\ i \geq 1\}\\
+        &=\lub\{\bot\ |\ i \geq 1\}\\
+        &=\bot\\
+        &=\outA(\lub\{x_i\ |\ i >= k\})\\
+        &=\outA(\lub\{x_i\ |\ i >= 1\}
+    \end{align*}
+    \item Case $\exists k. 1 \leq k$, s.t. $\forall i. i \geq k. x_i \in A$
+    \begin{align*}
+        &\mathbin{\hphantom{=}} \lub\{\outA(x_i)\ |\ i \geq 1\}\\
+        &=\lub\{\outA(x_i)\ |\ i \geq k\}\\
+        &=\lub\{x_i\ |\ i \geq k\}\\
+        &=\outA(\lub\{x_i\ |\ i \geq k\})\\
+        &=\outA(\lub\{x_i\ |\ i \geq 1\})
+    \end{align*}
+\end{itemize}
+
+\section{Exercise 10.2.13}
+Prove that $\head$ and $\tail$ are continuous functions.
+
+\paragraph{Solution}
+All the functions used in the definitions of $\head$
+and $\tail$ are continuous and function composition
+preserves continuity, hence $\head$ and $\tail$ are continuous.
+
+\section{Exercise 10.2.15}
+Let $N = \{\bot,0,1,2,3,\cdots\}$ be the elementary domain of natural numbers.
+A function $f: N \rightarrow N$ is called \textbf{strict} if $f(\bot) = \bot$.
+Consder a function $add1 : N \rightarrow N$ defined by $add(1) = n + 1$ for all $n \in N$ with $n \neq \bot$.
+Prove that if $add1$ is monotonic, it must also be strict.
+
+\paragraph{Solution}
+
+Suppose $f$ is monotonic, but not strict.\\
+Then $f(\bot) = n$ for some $n \in N$.\\
+Then $f(\bot) \subseteq f(n)$, because $\bot \subseteq n$ and $f$ monotonic.\\
+But $f(\bot) = n \not\subseteq n+1 = f(n)$, a contraction!
+
+\section{Exercise 10.3.8}
+Consider the following functional defined on functions over the natural numbers:
+\begin{align*}
+    G &: (N \rightarrow N) \rightarrow (N \rightarrow N)\\
+    G &= \lambda g. \lambda n.\myif n = 0 \then 2 \myelse g(n)
+\end{align*}
+\begin{enumerate}[label=\alph*)]
+    \item \label{a} Give and justify a recursive definition that corresponds to this functional -
+    that is, an operational definition of a function that will be a fixed point of $G$.
+    \item Define four different functions, $g_0$, $g_1$, $g_2$, $g_3$, that are fixed
+    points of the functional $G$, including the least fixed point, $g_0$. Carefully
+    prove that $g_0$ and $g_1$ are fixed points of $G$.
+    \item Draw a diagram showing the relationship "is less defined than or equal" between
+    these four functions.
+    \item Informally describe the oeprational behavior of the recursive definition in part \ref{a}.
+    Which of the four fixed-point functions has the closest behavior to the operational view?
+\end{enumerate}
+
+\paragraph{Solution a}
+Using fixed-point cunstruction, we obtain:
+\begin{align*}
+    G^0(\bot) &= \bot\\
+    G^1(\bot) &= \lambda.\myif n = 0 \then 2 \myelse \bot\\
+    G^2(\bot) &= \lambda.\myif n = 0 \then 2 \myelse (\lambda.\myif n = 0 \then 2 \myelse \bot) \bot\\
+              &= \lambda.\myif n = 0 \then 2 \myelse (\myif \bot = 0 \then 2 \myelse \bot)\\
+              &= \lambda.\myif n = 0 \then 2 \myelse \bot\\
+              &= G^1(\bot)
+\end{align*}
+Hence, $G^1(\bot) = (\lambda.\myif n = 0 \then 2 \myelse \bot)$ is a fixed point of $G$.
+The operational definition is $g = \lambda.\myif n = 0 \then 2 \myelse g(n)$
+\paragraph{Solution b}
+\begin{align*}
+g_0 &= \lambda.\myif n = 0 \then 2 \myelse \bot\\
+g_1 &= \lambda. 2\\ 
+g_2 &= \lambda.\myif n = 0 \then 2 \myelse 3\\
+g_3 &= \lambda.\myif n = 0 \then 2 \myelse 4
+\end{align*}
+We have already seen, that $g_0$ is a fixed point of $G$ in part a).
+Let's turn to $g_1$:
+\begin{align*}
+    G(g_1) &= \lambda.\myif n = 0 \then 2 \myelse (\lambda. 2) \bot\\
+           &= \lambda.\myif n = 0 \then 2 \myelse 2\\
+           &= \lambda.2 = g_1
+\end{align*}
+
+\paragraph{Solution c}
+\paragraph{} % This pseudo-paragraph is needed, so that latex prints the following figure below the previous paragraph.
+\begin{figure}[H]
+    \begin{tikzpicture}
+        \node (g0) {$g_0$};
+        \node (g2) [above=of g0] {$g_2$};
+        \node (g1) [left=of g2] {$g_1$};
+        \node (g3) [right=of g2] {$g_3$};
+        \draw (g0) -- (g1);
+        \draw (g0) -- (g2);
+        \draw (g0) -- (g3);
+    \end{tikzpicture}
+\end{figure}
+
+
+\paragraph{Solution d}
+
+If $g$ is applied to $0$ it will evaluate to $2$. If $g$ is applied to any other value
+it will not terminate. This is closest to the minmal fixed-point $g_0$ of $G$, which
+is undefined for values other than $0$. In contrast, $g_1, g_2$ and $g_3$ are more
+defined than $g$.
+
+\section{Exercise 10.3.11}
+Use fixed-point induction to prove the equality of the following functions in $N \rightarrow N$:
+\begin{align*}
+    &f(n) = \myif n > 5 \then n - 5 \myelse f(f(n+13))\\
+    &g(n) = \myif n > 5 \then n - 5 \myelse g(n+8)
+\end{align*}
+
+\paragraph{Solution}
+Consider the respective functionals:
+\begin{align*}
+    &F\ f\ n = \myif n > 5 \then n - 5 \myelse f(f(n+13))\\
+    &G\ g\ n = \myif n > 5 \then n - 5 \myelse g(n+8)
+\end{align*}
+We show $(F\ f\ n = G\ g\ n)$ by fixed-point induction on $f$ and $g$:
+\begin{itemize}
+    \item Case $\bot, \bot$:
+    \begin{align*}
+        F\ \bot\ n &= \myif n > 5 \then n - 5 \myelse \bot(\bot(n+13))\\
+                  &= \myif n > 5 \then n - 5 \myelse \bot\\
+                  &= \myif n > 5 \then n - 5 \myelse \bot(n+8)\\
+                  &= G\ \bot\ n
+    \end{align*}
+    \item Case $f,g$ with $f \neq \bot \neq g$:
+    \begin{align*}
+        F\ f\ n &= \myif n > 5 \then n - 5 \myelse f(f(n+13))\\
+              &= \myif n > 5 \then n - 5 \myelse f(\myif n + 13 > 5 \then n + 13 - 5 \myelse f(f(n+13+13)))\\
+              &= \myif n > 5 \then n - 5 \myelse f(n+13-5)\\
+              &= \myif n > 5 \then n - 5 \myelse f(n+8)\\
+              &= \myif n > 5 \then n - 5 \myelse g(n+8) \text{ by I.H.}\\
+              &= G\ g\ n
+    \end{align*}
+\end{itemize}
+
+\section{Exercise 10.3.14}
+Let $D$ be the set of natural numbers. Prove that the fixed-point operator
+\begin{align*}
+    fix &: (D \rightarrow D) \rightarrow D \text{ where }\\
+    fix &= \lambda F.\lub\{F^i(\bot)|i\geq 1\}
+\end{align*}
+is monotonic and continuous.
+
+\paragraph{Solution} We only show continuity, since it implies monotonicity.
+That is, wee need to show, that for any ascending chain $f_0 \subseteq f_1 \subseteq f_2 \subseteq \cdots$
+we have $\fix(\lub\{f_i\ |\ i \geq 0\}) = \lub\{\fix(f_i)\ |\ i \geq 0\}$.
+\begin{align*}
+    &\mathbin{\hphantom{=}} \fix(\lub\{f_i\ |\ i \geq 0\})\\
+    &=\lub\{(\lub\{f_i\ |\ i \geq 0\})^j\ |\ j \geq 0\}     &\text{ by def. of } \fix\\
+    &=\lub\{\lub\{f_i^j\ |\ i \geq 0\}\ |\ j \geq 0\}       &\forall i. f_i \text{ continuous}\\
+    &=\lub\{\lub\{f_i^j\ |\ j \geq 0\}\ |\ i \geq 0\}       &\lub \text{ associative}\\
+    &=\lub\{\fix(f_i)\ |\ i \geq 0\}                        &\text{ by def. of } \fix
+\end{align*}
+
+\section{Exercise 10.3.16} Contextfree
+grammars can be viewed as systems of equations where the
+nonterminals are regarded as variables (or unknowns) over sets of strings;
+the solution for the start symbol yields the language to be defined. In
+general, such an equation system has solutions that are tuples of sets,
+one for each nonterminal. Such solutions can be regarded as fixed points
+in that when they are substituted in the right-hand side, the result is
+precisely the solution again. For example (using ε for the null string), the
+grammar
+\begin{align*}
+    &A \Coloneqq aAc\ |\ B\\
+    &B \Coloneqq bB\ |\ C\\
+    &C \Coloneqq \epsilon\ |\ C
+\end{align*}
+corresponds to the transformation on triples $\langle X,Y,Z \rangle$ of sets defined
+by
+\begin{equation*}
+    f(\langle X,Y,Z \rangle) = \langle \{a\} \bullet X \bullet \{c\} \cup Y, \{b\} \bullet Y \cup Z, \{\epsilon\} \cup Z \rangle \text{,}
+\end{equation*}
+whose fixed point $\langle A,B,C \rangle$ then satisfies the set equations
+\begin{align*}
+    &A \Coloneqq \{a\} \bullet A \bullet \{c\}\ |\ B\\
+    &B \Coloneqq \{b\} \bullet B\ |\ C\\
+    &C \Coloneqq \epsilon\ |\ C
+\end{align*}
+for appopriate $A,B,C \subseteq \{a,b,c\}^*$. For instance, the quations above are satisfied by the sets
+$A = \{a^nb^*c^n\ |\ n \geq 0\}, B = b^*, C = \{\epsilon\}$.
+Show that the equation system corresponding to the grammar above
+has more than one possible solution so that simply seeking an arbitrary
+solution is insufficient for formal language purposes. However, the \textit{least}
+fixed point solution provides exactly the language normally defined by
+the grammar. Illustrate how the first few steps of the ascending chain in
+the fixed-point construction lead to the desired language elements for
+the grammar above, and discuss the connection with derivations in the
+grammar.\\
+\textit{Note}: We have the natural partial order for tuples of sets where
+\begin{equation*}
+    \langle S_1, \cdots, S_k \rangle \subseteq \langle T_1, \cdots, T_k \rangle \myif S_i \subseteq T_i \text{ for all } i, 1 \leq i \leq k
+\end{equation*}
+
+\paragraph{Solution}
+
+We show the first part by providing just another fixed point of $f$.
+Let $\Sigma = \{a,b,c\}$ and $P = \langle \Sigma^*, \Sigma^*, \Sigma^* \rangle$.
+Then $P$ is a fixed point of $f$:\\
+$f(\langle \Sigma^*, \Sigma^*, \Sigma^* \rangle) = \langle
+  \{a\} \bullet \Sigma^* \bullet \{c\} \cup \Sigma^*,
+  \{b\} \bullet \Sigma^* \cup \Sigma^*,
+  \{\epsilon\} \cup \Sigma^*
+\rangle = \langle \Sigma^*, \Sigma^*, \Sigma^* \rangle$
+
+Now, lets observe the first few steps of the fixed-point construction.
+
+\newcommand{\fa}[2]{\ensuremath{\{a\} \bullet #1 \bullet \{c\} \cup #2}}
+\newcommand{\fb}[2]{\ensuremath{\{b\} \bullet #1 \cup #2}}
+\newcommand{\fc}[1]{\ensuremath{\{\epsilon\} \cup #1}}
+
+\begin{figure}[H]
+    \begin{tabular}{l | c | c | c }
+        & X      & Y      & Z\\
+        \hline
+        $f^0$ & $\bot$ & $\bot$ & $\bot$\\
+        $f^1$ & $\bot$ & $\bot$ & $\fc{\bot}$\\
+        $f^2$ & $\bot$ & $\fc{\bot}$ & $\fc{\bot}$\\
+        $f^3$ & $\fc{\bot}$ & $\{\epsilon,b\} \cup \bot $ & $\fc{\bot}$\\
+        $f^4$ & $\{\epsilon,b,ac\} \cup \bot$ & $\{\epsilon,bb\} \cup \bot $ & $\fc{\bot}$\\
+        $f^5$ & $\{\epsilon,bb,abc,aacc\} \cup \bot$ & $\{\epsilon,bbb\} \cup \bot $ & $\fc{\bot}$\\
+        $f^6$ & $\{\epsilon,bbb,abbc,aabcc,aaaccc\} \cup \bot$ & $\{\epsilon,bbbb\} \cup \bot $ & $\fc{\bot}$\\
+    \end{tabular}    
+\end{figure}
+
+In general, we observe that $f^i(\langle \bot,\bot,\bot \rangle) = \langle \{ w\ |\ A \Rightarrow^i w\} \cup \bot,\{ w\ |\ B \Rightarrow^i w\} \cup \bot, \{ w\ |\ C \Rightarrow^i w\} \cup \bot \rangle$. Where $T \Rightarrow^i w$ means, that $w$ can be derived with exactly $i$ steps from the nonterminal $T$.
+
+\end{document}
